@@ -1,4 +1,46 @@
+import { useDispatch } from "react-redux";
+import { useLoginMutation } from "../../store/api/api";
+import { LoginCredentials, LoginResponse } from "../../interfaces/user";
+import { useState } from "react";
+import { loginSuccess } from "../../store/users/authSlice";
+
+
+
 const Login = () => {
+  const [formData, setFormData] = useState<LoginCredentials>({
+    email: '',
+    password: '',
+  });
+
+  const dispatch = useDispatch();
+  const [loginMutation, { isLoading }] = useLoginMutation();
+
+  const handleInputChange = (event: any) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+    const handleLogin = async (event: any) => {
+      event.preventDefault();
+      console.log(formData)
+      try {
+        const response : any= await loginMutation(formData);
+        console.log(response.data.message)
+  
+        if (response.data) {
+          console.log('Login successful:', response.data);
+          dispatch(loginSuccess(response.data));
+        } else {
+          console.log('Login failed:', response.error);
+          // Handle login failure if needed
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
   return (
     <>
       <section className="login-block">
@@ -6,15 +48,21 @@ const Login = () => {
           <div className="row">
             <div className="col-md-4 login-sec">
               <h2 className="text-center">Login Now</h2>
-              <form className="login-form">
+              <form className="login-form" onSubmit={handleLogin}>
                 <div className="form-group">
                   <label
                     htmlFor="exampleInputEmail1"
                     className="text-uppercase"
                   >
-                    Username
+                    Email
                   </label>
-                  <input type="text" className="form-control" placeholder="" />
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder=""
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange} />
                 </div>
                 <div className="form-group">
                   <label
@@ -27,6 +75,10 @@ const Login = () => {
                     type="password"
                     className="form-control"
                     placeholder=""
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+
                   />
                 </div>
 
