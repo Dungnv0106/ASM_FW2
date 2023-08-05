@@ -32,6 +32,8 @@ const Login = () => {
   
         if (response.data) {
           console.log('Login successful:', response.data);
+          localStorage.setItem('user', JSON.stringify(response.data));
+          
           dispatch(loginSuccess(response.data));
         } else {
           console.log('Login failed:', response.error);

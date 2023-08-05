@@ -161,7 +161,7 @@ export const resetPassword = async (req, res) => {
       message: "token không tồn tại hoặc đã hết hạn",
     });
   }
-  user.password = password;
+  user.password = await bcrypt.hash(password,10);
   user.passwordResetToken = undefined;
   user.passwordChangedAt = Date.now();
   user.passwordResetExpires = undefined;
