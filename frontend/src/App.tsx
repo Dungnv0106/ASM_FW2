@@ -17,6 +17,7 @@ import AddProduct from "./components/admin/products/AddProduct";
 import UpdateProduct from "./components/admin/products/UpdateProduct";
 import AddCategory from "./components/admin/categories/AddCategory";
 import UpdateCategory from "./components/admin/categories/UpdateCategory";
+import PrivateRouter from "./components/PrivateRouter";
 function App() {
   return (
     <>
@@ -30,19 +31,26 @@ function App() {
           <Route path="shop" element={<Shop />} />
           <Route path="cart" element={<Cart />} />
         </Route>
-        <Route path="admin" element={<LayOutAdmin/>}>
-          <Route path="" element={<Dashboard/>}/>
-          
-          <Route path="products"  element={<Products/>}/>
-          <Route path="products/add"  element={<AddProduct/>}/>
-          <Route path="products/update/:id"  element={<UpdateProduct/>}/>
+        <Route
+          path="admin"
+          element={
+            <PrivateRouter>
+              <LayOutAdmin />
+            </PrivateRouter>
+          }
+        >
+          <Route path="" element={<Dashboard />} />
 
-          <Route path="categories"  element={<Categories/>}/>
-          <Route path="categories/add"  element={<AddCategory/>}/>
-          <Route path="categories/update/:id"  element={<UpdateCategory/>}/>
+          <Route path="products" element={<Products />} />
+          <Route path="products/add" element={<AddProduct />} />
+          <Route path="products/update/:id" element={<UpdateProduct />} />
 
-          <Route path="orders"  element={<Orders/>}/>
-          <Route path="users"  element={<Users/>}/>
+          <Route path="categories" element={<Categories />} />
+          <Route path="categories/add" element={<AddCategory />} />
+          <Route path="categories/update/:id" element={<UpdateCategory />} />
+
+          <Route path="orders" element={<Orders />} />
+          <Route path="users" element={<Users />} />
         </Route>
       </Routes>
     </>

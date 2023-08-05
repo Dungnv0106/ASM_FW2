@@ -1,23 +1,23 @@
 import { useState } from "react";
 import { RegisterData } from "../../interfaces/user";
-import { useRegisterMutation } from "../../store/api/api";
+import { useRegisterMutation } from "../../store/api/users";
 
 const Register = () => {
   const [formData, setFormData] = useState<RegisterData>({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    num_phone: '',
-    address: '',
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    num_phone: "",
+    address: "",
   });
   const [registerMutation, { isLoading }] = useRegisterMutation();
 
   const handleRegister = async (event: any) => {
     event.preventDefault();
-    console.log(formData)
+    console.log(formData);
     const response = await registerMutation(formData);
-    console.log(response)
+    console.log(response);
   };
   const handleInputChange = (event: any) => {
     const { name, value } = event.target;

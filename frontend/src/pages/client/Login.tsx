@@ -1,15 +1,14 @@
 import { useDispatch } from "react-redux";
-import { useLoginMutation } from "../../store/api/api";
+import { useLoginMutation } from "../../store/api/users";
 import { LoginCredentials, LoginResponse } from "../../interfaces/user";
 import { useState } from "react";
-import { loginSuccess } from "../../store/users/authSlice";
-
-
+import { loginSuccess } from "../../store/feature/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState<LoginCredentials>({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const dispatch = useDispatch();
@@ -23,24 +22,29 @@ const Login = () => {
     }));
   };
 
-    const handleLogin = async (event: any) => {
-      event.preventDefault();
-      console.log(formData)
-      try {
-        const response : any= await loginMutation(formData);
-        console.log(response.data.message)
-  
-        if (response.data) {
-          console.log('Login successful:', response.data);
-          dispatch(loginSuccess(response.data));
-        } else {
-          console.log('Login failed:', response.error);
-          // Handle login failure if needed
-        }
-      } catch (error) {
-        console.error(error);
+  const handleLogin = async (event: any) => {
+    event.preventDefault();
+    console.log(formData);
+    try {
+      const response: any = await loginMutation(formData);
+      console.log(response.data.message);
+      const navigate = useNavigate();
+      if (response.data) {
+        console.log("Login successful:", response.data);
+
+        localStorage.setItem("accessToken", response.data.accessToken);
+
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+
+        dispatch(loginSuccess(response.data));
+      } else {
+        console.log("Login failed:", response.error);
+        // Handle login failure if needed
       }
-    };
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
       <section className="login-block">
@@ -62,7 +66,8 @@ const Login = () => {
                     placeholder=""
                     name="email"
                     value={formData.email}
-                    onChange={handleInputChange} />
+                    onChange={handleInputChange}
+                  />
                 </div>
                 <div className="form-group">
                   <label
@@ -78,7 +83,6 @@ const Login = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-
                   />
                 </div>
 

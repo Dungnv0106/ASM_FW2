@@ -1,17 +1,19 @@
-import React from 'react'
-import Silebar from './Silebar'
-import Dashboard from '../../pages/admin/Dashboard'
-import { Outlet } from 'react-router-dom'
+import React from "react";
+import Silebar from "./Silebar";
+import Dashboard from "../../pages/admin/Dashboard";
+import { Outlet } from "react-router-dom";
 
-type Props = {}
+type Props = {};
 
-const LayOutAdmin = (props: Props) => {
-    return <>
-        <div className='container'>
-            <Silebar />
-            <Outlet/>
-        </div>
+const LayOutAdmin = () => {
+  return (
+    <>
+      <div className="container">
+        <Silebar />
+        <Outlet />
+      </div>
     </>
-}
+  );
+};
 
-export default LayOutAdmin
+export default LayOutAdmin;
