@@ -28,10 +28,12 @@ const Login = () => {
       console.log(formData)
       try {
         const response : any= await loginMutation(formData);
-        console.log(response.data.message)
+        console.log(response)
   
         if (response.data) {
           console.log('Login successful:', response.data);
+
+          // set vào localstorage
           localStorage.setItem('user', JSON.stringify(response.data));
           
           dispatch(loginSuccess(response.data));
@@ -86,8 +88,8 @@ const Login = () => {
 
                 <div className="form-check">
                   <label className="form-check-label">
-                    <input type="checkbox" className="form-check-input" />
-                    <small>Remember Me</small>
+                    {/* <input type="checkbox" className="form-check-input" /> */}
+                    <a href="/forgot-password"><small>Forgot Password</small></a>
                   </label>
                   <button type="submit" className="btn btn-login float-right">
                     Submit

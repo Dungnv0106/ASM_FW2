@@ -17,12 +17,16 @@ import AddProduct from "./components/admin/products/AddProduct";
 import UpdateProduct from "./components/admin/products/UpdateProduct";
 import AddCategory from "./components/admin/categories/AddCategory";
 import UpdateCategory from "./components/admin/categories/UpdateCategory";
+import EmailResetpass from "./pages/client/Email-Resetpass";
+import ResetPassword from "./pages/client/ResetPassword";
 function App() {
   return (
     <>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<EmailResetpass />} />
+        <Route path="/reset-password/:id" element={<ResetPassword />} />
         <Route path="/" element={<LayOutClient />}>
           <Route index element={<Home />} />
           <Route path="blog" element={<Blog />} />
