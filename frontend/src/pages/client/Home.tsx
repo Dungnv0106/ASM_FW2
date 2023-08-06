@@ -1,4 +1,13 @@
+import { useEffect } from "react";
+
+interface IUser{
+  message: string,
+  accessToken: string,
+  data: any
+}
+
 const Home = () => {
+  
   return (
     <>
       <section className="home">
