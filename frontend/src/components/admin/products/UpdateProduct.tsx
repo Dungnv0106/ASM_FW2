@@ -22,21 +22,23 @@ const UpdateProduct = () => {
     formState: { errors },
   } = useForm();
   const { id } = useParams();
-  console.log(id);
+
   const { data: productById } = useGetProductByIdQuery(id);
   const { data: categories } = useGetAllCategoriesQuery(null);
   const [updateProduct] = useUpdateProductMutation();
   const navigate = useNavigate();
-  console.log(productById);
+  console.log(productById?.data.image);
 
   const onSubmit = async (data: any) => {
     let img = [];
-
-    console.log(data.image);
     const arrayImage = Array.from(data.image);
-    if (arrayImage.length > 0) {
+    console.log(arrayImage);
+
+    if (data.image.length === productById?.data.image.length) {
+      // Nếu không có ảnh mới, giữ lại ảnh cũ bằng cách lấy lại ảnh cũ từ productById
       img = productById?.data.image;
     } else {
+      // Nếu có ảnh mới, tiến hành xử lý ảnh mới
       for (let file of data.image) {
         const formData = new FormData();
         formData.append("file", file);
