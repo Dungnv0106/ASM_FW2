@@ -27,7 +27,6 @@ const Register = () => {
     if (!formData.name) {
       errors.push('Vui lòng nhập tên.');
     }
-
     if (!formData.email) {
       errors.push('Vui lòng nhập địa chỉ email.');
     } else if (!emailPattern.test(formData.email)) {
@@ -47,7 +46,6 @@ const Register = () => {
     if (!formData.address) {
       errors.push('Vui lòng nhập địa chỉ.');
     }
-
     if (errors.length > 0) {
       setErrors(errors); // Cập nhật mảng lỗi
       return;
@@ -59,6 +57,7 @@ const Register = () => {
         alert("Đăng kí thành công")
         navigate('/login')
       }else{
+        console.log(response.data)
         alert("Email đã được đăng kí rồi")
       }
 

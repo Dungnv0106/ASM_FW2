@@ -19,7 +19,7 @@ const store: any = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
-      // authApi.middleware,
+      api.middleware,
       products.middleware,
       categories.middleware
     ),
