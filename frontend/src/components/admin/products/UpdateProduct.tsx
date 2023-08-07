@@ -1,52 +1,150 @@
-import React from 'react'
+import { useGetAllCategoriesQuery } from "../../../store/api/categories";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import {
+  useGetProductByIdQuery,
+  useUpdateProductMutation,
+} from "../../../store/api/products";
+import { useEffect } from "react";
 
-type Props = {}
+const CLOUD_NAME = "ddtksppbq";
+const UPLOAD_PRESET = "demo-upload";
+const FOLDER_NAME = "ban-hang";
+const cloudinaryAPI =
+  "https://api.cloudinary.com/v1_1/" + CLOUD_NAME + "/image/upload";
 
-const UpdateProduct = (props: Props) => {
-  return <>
-    <p className="fs-1">Sửa sản phẩm</p>
+const UpdateProduct = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+  const { id } = useParams();
+  console.log(id);
+  const { data: productById } = useGetProductByIdQuery(id);
+  const { data: categories } = useGetAllCategoriesQuery(null);
+  const [updateProduct] = useUpdateProductMutation();
+  const navigate = useNavigate();
+  console.log(productById);
 
-    <form>
-      <div className="form-group">
-        <label>Tên sản phẩm</label>
-        <input type="text" className="form-control" id="name" placeholder="Tên sản phẩm" />
-      </div>
-      <div className="form-group">
-        <label>Giá sản phẩm</label>
-        <input type="text" className="form-control" id="price" placeholder="Giá sản phẩm" />
-      </div>
-      <div className="form-group">
-        <label >Ảnh sản phẩm</label>
-        <input type="file" className="form-control-file" id="exampleFormControlFile1" />
-      </div>
-      <div className="form-group">
-        <label >Danh mục</label>
-        <select className="form-control" id="exampleFormControlSelect1">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
-      </div>
-      <div className="form-group">
-        <label >Các loại size</label>
-        <select multiple className="form-control" id="exampleFormControlSelect2">
-          <option>M</option>
-          <option>L</option>
-          <option>X</option>
-          <option>Xl</option>
-          <option>2Xl</option>
-        </select>
-      </div>
-      <div className="form-group">
-        <label >Mô tả</label>
-        <textarea className="form-control" id="exampleFormControlTextarea1" rows={3}></textarea>
-      </div>
-      <button type="button" className="btn btn-primary m-2">Thêm sản phẩm</button>
-    </form>
+  const onSubmit = async (data: any) => {
+    let img = [];
 
-  </>
-}
+    console.log(data.image);
+    const arrayImage = Array.from(data.image);
+    if (arrayImage.length > 0) {
+      img = productById?.data.image;
+    } else {
+      for (let file of data.image) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", UPLOAD_PRESET);
+        formData.append("folder", FOLDER_NAME);
+        const response = await axios.post(cloudinaryAPI, formData);
+        console.log(response.data.url);
 
-export default UpdateProduct
+        const imageUrl = {
+          publicId: response.data.version_id,
+          url: response.data.url,
+        };
+        img.push(imageUrl);
+      }
+    }
+
+    await updateProduct({
+      _id: productById._id,
+      ...data,
+      image: img,
+      categoryId: data.categoryId,
+    });
+    navigate("/admin/products");
+  };
+  useEffect(() => {
+    reset(productById?.data);
+  }, [productById]);
+  return (
+    <>
+      <p className="fs-1">Sửa sản phẩm</p>
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="form-group">
+          <label>Product Name</label>
+          <input
+            type="text"
+            className="form-control"
+            id="exampleFormControlInput1"
+            placeholder="Tên sản phẩm"
+            {...register("productName", { required: true })}
+          />
+        </div>
+        <div className="form-group">
+          <label>Price</label>
+          <input
+            type="number"
+            className="form-control"
+            id="exampleFormControlInput1"
+            placeholder="Giá sản phẩm"
+            {...register("price", { required: true })}
+          />
+        </div>
+        <div className="form-group">
+          <label>originalPrice</label>
+          <input
+            type="number"
+            className="form-control"
+            id="exampleFormControlInput1"
+            placeholder="Giá sản phẩm"
+            {...register("originalPrice", { required: true })}
+          />
+        </div>
+        <div className="form-group">
+          <label>Decription</label>
+          <input
+            type="text"
+            className="form-control"
+            id="exampleFormControlInput1"
+            placeholder="Giá sản phẩm"
+            {...register("description", { required: true })}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Image</label>
+          <input
+            type="file"
+            multiple
+            className="form-control"
+            id="inputGroupFile03"
+            aria-describedby="inputGroupFileAddon03"
+            aria-label="Upload"
+            {...register("image")}
+          />
+        </div>
+        <div className="form-group">
+          <label>Category</label>
+          <select
+            className="form-control"
+            id="exampleFormControlSelect1"
+            {...register("categoryId", { required: true })}
+          >
+            {categories?.map((category: any) => {
+              return (
+                <option key={category._id} value={category._id}>
+                  {category.name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+
+        <button type="submit" className="btn btn-primary m-2">
+          Thêm sản phẩm
+        </button>
+      </form>
+    </>
+  );
+};
+
+export default UpdateProduct;

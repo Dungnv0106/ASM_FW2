@@ -11,7 +11,6 @@ const Login = () => {
     password: "",
   });
 
-  const dispatch = useDispatch();
   const [loginMutation, { isLoading }] = useLoginMutation();
 
   const handleInputChange = (event: any) => {
@@ -27,22 +26,16 @@ const Login = () => {
     console.log(formData);
     try {
       const response: any = await loginMutation(formData);
-      console.log(response.data.message);
-      const navigate = useNavigate();
-      if (response.data) {
-        console.log("Login successful:", response.data);
+      console.log(response.data);
 
-        localStorage.setItem("accessToken", response.data.accessToken);
+      console.log("Login successful:", response.data);
 
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("accessToken", response.data.accessToken);
+      console.log(response.data);
 
-        dispatch(loginSuccess(response.data));
-      } else {
-        console.log("Login failed:", response.error);
-        // Handle login failure if needed
-      }
+      localStorage.setItem("user", JSON.stringify(response.data.user));
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
   return (

@@ -23,7 +23,7 @@ export const products = createApi({
     }),
     // get product by id
     getProductById: builder.query({
-      query: (id: string) => ({
+      query: (id) => ({
         url: `/products/${id}`,
         method: "GET",
       }),
@@ -41,7 +41,7 @@ export const products = createApi({
     //update product
     updateProduct: builder.mutation({
       query: (product) => ({
-        url: `/products/${product._id}`,
+        url: `/products/update/${product._id}`,
         method: "PATCH",
         body: product,
       }),
@@ -49,8 +49,8 @@ export const products = createApi({
     }),
     //delete product
     deleteProduct: builder.mutation({
-      query: ({ id }) => ({
-        url: `/products/${id}`,
+      query: (product) => ({
+        url: `/products/${product._id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["products"],
