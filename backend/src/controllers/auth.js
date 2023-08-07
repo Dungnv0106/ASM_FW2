@@ -78,7 +78,7 @@ export const signin = async (req, res) => {
       });
     }
     const token = jwt.sign({ id: user._id }, "diendeptrai", {
-      expiresIn: "1d",
+      expiresIn: "7d",
     });
     user.password = undefined;
 
