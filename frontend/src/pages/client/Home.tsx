@@ -1,5 +1,6 @@
 import { useGetAllProductsQuery } from "../../store/api/products";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const Home = ({ productsList }: any) => {
   // console.log(productsList);
@@ -86,58 +87,6 @@ const Home = ({ productsList }: any) => {
           <p>Here you can check out our new products with fair price on rymo</p>
         </div>
         <div className="row mx-auto container-fluid">
-          {/* <div className="product col-lg-3">
-            <img src="img/featured/1.jpg" alt="" className="img-fluid" />
-            <div className="star">
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-            </div>
-            <p className="product_name">Sport Boot</p>
-            <p className="product_price">$1000</p>
-            <button className="btn-product">BUY NOW</button>
-          </div>
-          <div className="product col-lg-3">
-            <img src="img/featured/2.jpg" alt="" className="img-fluid" />
-            <div className="star">
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-            </div>
-            <p className="product_name">Sport Boot</p>
-            <p className="product_price">$1000</p>
-            <button className="btn-product">BUY NOW</button>
-          </div>
-          <div className="product col-lg-3">
-            <img src="img/featured/3.jpg" alt="" className="img-fluid" />
-            <div className="star">
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-            </div>
-            <p className="product_name">Sport Boot</p>
-            <p className="product_price">$1000</p>
-            <button className="btn-product">BUY NOW</button>
-          </div>
-          <div className="product col-lg-3">
-            <img src="img/featured/4.jpg" alt="" className="img-fluid" />
-            <div className="star">
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-            </div>
-            <p className="product_name">Sport Boot</p>
-            <p className="product_price">$1000</p>
-            <button className="btn-product">BUY NOW</button>
-          </div> */}
         </div>
       </div>
     </>

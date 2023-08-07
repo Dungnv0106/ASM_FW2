@@ -2,16 +2,24 @@ import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../../store/api/users";
 import { LoginCredentials, LoginResponse } from "../../interfaces/user";
 import { useState } from "react";
-import { loginSuccess } from "../../store/feature/authSlice";
-import { useNavigate } from "react-router-dom";
+// import { loginSuccess } from "../../store/users/authSlice";
+
+
 
 const Login = () => {
+  // dữ liệu form
   const [formData, setFormData] = useState<LoginCredentials>({
     email: "",
     password: "",
   });
+  const [loginErrors, setLoginErrors] = useState<string[]>([]);
+
+  const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [loginMutation, { isLoading }] = useLoginMutation();
 
   const handleInputChange = (event: any) => {
@@ -22,29 +30,24 @@ const Login = () => {
     }));
   };
 
-  const handleLogin = async (event: any) => {
-    event.preventDefault();
-    console.log(formData);
-    try {
-      const response: any = await loginMutation(formData);
-      console.log(response.data.message);
-      const navigate = useNavigate();
-      if (response.data) {
-        console.log("Login successful:", response.data);
-
-        localStorage.setItem("accessToken", response.data.accessToken);
-
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-
-        dispatch(loginSuccess(response.data));
-      } else {
-        console.log("Login failed:", response.error);
-        // Handle login failure if needed
+    const handleLogin = async (event: any) => {
+      event.preventDefault();
+      console.log(formData)
+      try {
+        const response : any= await loginMutation(formData);
+        console.log(response.data.message)
+  
+        if (response.data) {
+          console.log('Login successful:', response.data);
+          dispatch(loginSuccess(response.data));
+        } else {
+          console.log('Login failed:', response.error);
+          // Handle login failure if needed
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    };
   return (
     <>
       <section className="login-block">
@@ -66,8 +69,7 @@ const Login = () => {
                     placeholder=""
                     name="email"
                     value={formData.email}
-                    onChange={handleInputChange}
-                  />
+                    onChange={handleInputChange} />
                 </div>
                 <div className="form-group">
                   <label
@@ -83,19 +85,35 @@ const Login = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
+
                   />
                 </div>
 
-                <div className="form-check">
-                  <label className="form-check-label">
-                    <input type="checkbox" className="form-check-input" />
-                    <small>Remember Me</small>
-                  </label>
-                  <button type="submit" className="btn btn-login float-right">
-                    Submit
-                  </button>
-                </div>
-              </form>
+                    <div className="form-check">
+                      <label className="form-check-label">
+                        {/* <input type="checkbox" className="form-check-input" /> */}
+                        <a href="/forgot-password"><small>Quên mật khẩu</small></a> <br />
+                        <a href="/register"><small>Đăng kí</small></a>
+                      </label>
+                      <button type="submit" className="btn btn-login float-right">
+                        Đăng nhập
+                      </button>
+                    </div>
+                  </form>
+                  {loginErrors.length > 0 && (
+                    <div className="alert alert-danger">
+                      <ul>
+                        {loginErrors.map((error, index) => (
+                          <li key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </>
+              )
+              }
+
+
               <div className="copy-text">
                 Created with <i className="fa fa-heart"></i> by Grafreez
               </div>

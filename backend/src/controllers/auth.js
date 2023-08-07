@@ -129,7 +129,7 @@ export const forgotPassword = async (req, res) => {
 
   await user.save();
 
-  const html = `Xin vui lòng click vào link dưới đây để thay đổi mật khẩu của bạn.Link này sẽ hết hạn sau 15 phút kể từ bây giờ. <a href=http://localhost:8080/api/reset-password/${resetToken}>Click here</a>`;
+  const html = `Xin vui lòng click vào link dưới đây để thay đổi mật khẩu của bạn.Link này sẽ hết hạn sau 15 phút kể từ bây giờ. <a href=http://localhost:5173/reset-password/${resetToken}>Click here</a>`;
 
   const data = {
     email,
@@ -161,8 +161,8 @@ export const resetPassword = async (req, res) => {
       message: "token không tồn tại hoặc đã hết hạn",
     });
   }
-  user.password = password;
 
+  user.password = await bcrypt.hash(password,10);
   user.passwordResetToken = undefined;
   user.passwordChangedAt = Date.now();
   user.passwordResetExpires = undefined;
