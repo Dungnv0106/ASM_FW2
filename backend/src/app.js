@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-console.log(process);
+// console.log(process);
 const { CONNECT_SERVER } = process.env;
 
 const app = express();

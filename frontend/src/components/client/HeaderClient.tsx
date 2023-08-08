@@ -1,6 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import isLogin from "./isLogin";
 
 const HeaderClient = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary py-3 fixed-top">
@@ -22,48 +25,48 @@ const HeaderClient = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link to={"/"}>
-                  <a className="nav-link" href="#">
-                    Home
-                  </a>
+                <Link to={"/"} className="nav-link">
+                  Home
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to={"/shop"}>
-                  <a className="nav-link" href="#">
-                    shop
-                  </a>
+                <Link to={"/shop"} className="nav-link">
+                  Shop
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to={"/blog"}>
-                  <a className="nav-link" href="#">
-                    Blog
-                  </a>
+                <Link to={"/blog"} className="nav-link">
+                  Blog
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link to={"/register"}>
-                  <a className="nav-link" href="#">
-                    Register
-                  </a>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to={"/login"}>
-                  <a className="nav-link" href="#">
-                    Login
-                  </a>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  {/* <i className="fal fa-search"></i> */}
-                  <Link to={"/cart"}>
-                    <i className="fal fa-shopping-bag"></i>
-                  </Link>
-                </a>
-              </li>
+              {isLogin() ? (
+                <>
+                  <li className="nav-item">
+                    <Link to={"/cart"} className="nav-link">
+                      <i className="fal fa-shopping-bag"></i>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to={"/information"} className="nav-link">
+                      <i className="fal fa-user"></i>{" "}
+                      {/* Đây là mã icon người dùng từ FontAwesome */}
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="nav-item">
+                    <Link to={"/register"} className="nav-link">
+                      Register
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to={"/login"} className="nav-link">
+                      Login
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

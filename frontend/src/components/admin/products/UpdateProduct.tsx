@@ -133,7 +133,7 @@ const UpdateProduct = () => {
           >
             {categories?.map((category: any) => {
               return (
-                <option key={category._id} value={category._id}>
+                <option key={category._id} value={category._id} selected>
                   {category.name}
                 </option>
               );

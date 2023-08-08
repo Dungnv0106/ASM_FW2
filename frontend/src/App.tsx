@@ -17,28 +17,46 @@ import AddProduct from "./components/admin/products/AddProduct";
 import UpdateProduct from "./components/admin/products/UpdateProduct";
 import AddCategory from "./components/admin/categories/AddCategory";
 import UpdateCategory from "./components/admin/categories/UpdateCategory";
-import PrivateRouter from "./components/PrivateRouter";
+import { useGetAllProductsQuery } from "./store/api/products";
+import { useGetAllCategoriesQuery } from "./store/api/categories";
+import EmailResetpass from "./pages/client/Email-Resetpass";
+import ResetPassword from "./pages/client/ResetPassword";
+import Customer from "./pages/client/Customer";
+import Bill from "./pages/client/Bill";
 function App() {
+  const {
+    isLoading,
+    isError,
+    data: productsList,
+  } = useGetAllProductsQuery(null);
+  const { data: categoryList } = useGetAllCategoriesQuery(null);
+
   return (
     <>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<EmailResetpass />} />
+        <Route path="/reset-password/:id" element={<ResetPassword />} />
+        <Route path="/information" element={<Customer />} />
+        <Route path="/bill" element={<Bill />} />
+
         <Route path="/" element={<LayOutClient />}>
-          <Route index element={<Home />} />
+          <Route index element={<Home productsList={productsList} />} />
           <Route path="blog" element={<Blog />} />
-          <Route path="product/:id" element={<ProductDetail />} />
-          <Route path="shop" element={<Shop />} />
+          <Route
+            path="product/:id"
+            element={
+              <ProductDetail
+                productsList={productsList}
+                categoryList={categoryList}
+              />
+            }
+          />
+          <Route path="shop" element={<Shop productsList={productsList} />} />
           <Route path="cart" element={<Cart />} />
         </Route>
-        <Route
-          path="admin"
-          element={
-            <PrivateRouter>
-              <LayOutAdmin />
-            </PrivateRouter>
-          }
-        >
+        <Route path="admin" element={<LayOutAdmin />}>
           <Route path="" element={<Dashboard />} />
 
           <Route path="products" element={<Products />} />

@@ -1,15 +1,19 @@
 import { useDispatch } from "react-redux";
-import { useLoginMutation } from "../../store/api/users";
+import { useLoginMutation } from "../../store/api/api";
 import { LoginCredentials, LoginResponse } from "../../interfaces/user";
 import { useState } from "react";
-import { loginSuccess } from "../../store/feature/authSlice";
 import { useNavigate } from "react-router-dom";
+import isLogin from "../../components/client/isLogin";
 
 const Login = () => {
+  // dữ liệu form
   const [formData, setFormData] = useState<LoginCredentials>({
     email: "",
     password: "",
   });
+  const [loginErrors, setLoginErrors] = useState<string[]>([]);
+
+  const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
   const [loginMutation, { isLoading }] = useLoginMutation();
 
@@ -20,10 +24,26 @@ const Login = () => {
       [name]: value,
     }));
   };
-
+  const navigate = useNavigate();
   const handleLogin = async (event: any) => {
     event.preventDefault();
-    console.log(formData);
+    // console.log(formData)
+    // lỗi validate
+    const errors: string[] = [];
+
+    if (!formData.email) {
+      errors.push("Vui lòng nhập địa chỉ email.");
+    } else if (!emailPattern.test(formData.email)) {
+      errors.push("Email không đúng định dạng");
+    }
+    if (!formData.password) {
+      errors.push("Vui lòng nhập mật khẩu.");
+    }
+
+    if (errors.length > 0) {
+      setLoginErrors(errors); // Cập nhật mảng lỗi
+      return;
+    }
     try {
       const response: any = await loginMutation(formData);
       console.log(response.data);
@@ -34,6 +54,7 @@ const Login = () => {
       console.log(response.data);
 
       localStorage.setItem("user", JSON.stringify(response.data.user));
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -44,51 +65,89 @@ const Login = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-4 login-sec">
-              <h2 className="text-center">Login Now</h2>
-              <form className="login-form" onSubmit={handleLogin}>
-                <div className="form-group">
-                  <label
-                    htmlFor="exampleInputEmail1"
-                    className="text-uppercase"
+              {isLogin() ? (
+                <div>
+                  <p>Bạn đã đăng nhập rồi.</p>
+                  {/* Hiển thị nút để đăng xuất */}
+                  <button
+                    className="btn btn-login float-right"
+                    onClick={() => {
+                      localStorage.removeItem("user");
+                      localStorage.removeItem("accessToken");
+                      navigate("/");
+                    }}
                   >
-                    Email
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder=""
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="form-group">
-                  <label
-                    htmlFor="exampleInputPassword1"
-                    className="text-uppercase"
-                  >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder=""
-                    name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                  />
-                </div>
-
-                <div className="form-check">
-                  <label className="form-check-label">
-                    <input type="checkbox" className="form-check-input" />
-                    <small>Remember Me</small>
-                  </label>
-                  <button type="submit" className="btn btn-login float-right">
-                    Submit
+                    Đăng xuất
                   </button>
                 </div>
-              </form>
+              ) : (
+                <>
+                  <h2 className="text-center">Login Now</h2>
+                  <form className="login-form" onSubmit={handleLogin}>
+                    <div className="form-group">
+                      <label
+                        htmlFor="exampleInputEmail1"
+                        className="text-uppercase"
+                      >
+                        Email
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder=""
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label
+                        htmlFor="exampleInputPassword1"
+                        className="text-uppercase"
+                      >
+                        Password
+                      </label>
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder=""
+                        name="password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+
+                    <div className="form-check">
+                      <label className="form-check-label">
+                        {/* <input type="checkbox" className="form-check-input" /> */}
+                        <a href="/forgot-password">
+                          <small>Quên mật khẩu</small>
+                        </a>{" "}
+                        <br />
+                        <a href="/register">
+                          <small>Đăng kí</small>
+                        </a>
+                      </label>
+                      <button
+                        type="submit"
+                        className="btn btn-login float-right"
+                      >
+                        Đăng nhập
+                      </button>
+                    </div>
+                  </form>
+                  {loginErrors.length > 0 && (
+                    <div className="alert alert-danger">
+                      <ul>
+                        {loginErrors.map((error, index) => (
+                          <li key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </>
+              )}
+
               <div className="copy-text">
                 Created with <i className="fa fa-heart"></i> by Grafreez
               </div>
