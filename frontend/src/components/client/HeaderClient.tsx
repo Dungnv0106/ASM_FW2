@@ -1,16 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import isLogin from "./isLogin";
 
 const HeaderClient = () => {
 
-  const navigate = useNavigate()
-  const logout = () => {
-    // Xóa dữ liệu người dùng khỏi localStorage
-    localStorage.removeItem('user');
+  // const navigate = useNavigate();
+  // const logout = () => {
+  //   // Xóa dữ liệu người dùng khỏi localStorage
+  //   localStorage.removeItem('user');
 
 
-    navigate('/login')
-  };
+  //   navigate('/login')
+  // };
 
 
   return (
