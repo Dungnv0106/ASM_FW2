@@ -7,7 +7,7 @@ const LayOutClient = () => {
   return (
     <div>
       <HeaderClient />
-      <Outlet></Outlet>
+      <Outlet />
       <FooterClient />
     </div>
   );

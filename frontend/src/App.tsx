@@ -21,6 +21,8 @@ import { useGetAllProductsQuery } from "./store/api/products";
 import { useGetAllCategoriesQuery } from "./store/api/categories";
 import EmailResetpass from "./pages/client/Email-Resetpass";
 import ResetPassword from "./pages/client/ResetPassword";
+import Customer from "./pages/client/Customer";
+import Bill from "./pages/client/Bill";
 function App() {
   const {
     isLoading,
@@ -28,6 +30,7 @@ function App() {
     data: productsList,
   } = useGetAllProductsQuery(null);
   const { data: categoryList } = useGetAllCategoriesQuery(null);
+
   return (
     <>
       <Routes>
@@ -35,22 +38,30 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<EmailResetpass />} />
         <Route path="/reset-password/:id" element={<ResetPassword />} />
+        <Route path="/information" element={<Customer />} />
+        <Route path="/bill" element={<Bill />} />
+
         <Route path="/" element={<LayOutClient />}>
           <Route index element={<Home productsList={productsList} />} />
           <Route path="blog" element={<Blog />} />
           <Route
             path="product/:id"
-            element={<ProductDetail productsList={productsList} categoryList={categoryList} />}
+            element={
+              <ProductDetail
+                productsList={productsList}
+                categoryList={categoryList}
+              />
+            }
           />
           <Route path="shop" element={<Shop productsList={productsList} />} />
           <Route path="cart" element={<Cart />} />
         </Route>
-        <Route path="admin" element={<LayOutAdmin/>}>
-          <Route path="" element={<Dashboard/>}/>
-          
-          <Route path="products"  element={<Products/>}/>
-          <Route path="products/add"  element={<AddProduct/>}/>
-          <Route path="products/update/:id"  element={<UpdateProduct/>}/>
+        <Route path="admin" element={<LayOutAdmin />}>
+          <Route path="" element={<Dashboard />} />
+
+          <Route path="products" element={<Products />} />
+          <Route path="products/add" element={<AddProduct />} />
+          <Route path="products/update/:id" element={<UpdateProduct />} />
 
           <Route path="categories" element={<Categories />} />
           <Route path="categories/add" element={<AddCategory />} />

@@ -49,31 +49,31 @@ const Home = ({ productsList }: any) => {
           className="row mx-auto container-fluid"
           style={{ overflow: "hidden" }}
         >
-          {productsList?.docs.map((product: any, index: number) => {
+          {productsList?.docs.map((product: any, index: any) => {
             return (
               // <Link to="/product/:id">
-                <div className="product col-lg-3" key={index}>
-                  <Link to={`/product/${product._id}`} >
-                    <div style={{ overflow: "hidden" }}>
-                      <img
-                        style={{ width: "310px", height: "340px" }}
-                        src={product.image?.[0].url}
-                        alt=""
-                        className="img-fluid"
-                      />
-                    </div>
-                    <div className="star">
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                      <i className="fas fa-star"></i>
-                    </div>
-                    <p className="product_name">{product.productName}</p>
-                    <p className="product_price">${product.price}</p>
-                    <button className="btn-product">BUY NOW</button>
-                  </Link>
-                </div>
+              <div className="product col-lg-3" key={index}>
+                <Link to={`/product/${product._id}`}>
+                  <div style={{ overflow: "hidden" }}>
+                    <img
+                      style={{ width: "310px", height: "340px" }}
+                      src={product.image?.[0].url}
+                      alt=""
+                      className="img-fluid"
+                    />
+                  </div>
+                  <div className="star">
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                  </div>
+                  <p className="product_name">{product.productName}</p>
+                  <p className="product_price">${product.price}</p>
+                  <button className="btn-product">BUY NOW</button>
+                </Link>
+              </div>
               // </Link>
             );
           })}
@@ -86,8 +86,7 @@ const Home = ({ productsList }: any) => {
           <hr className="mx-auto" />
           <p>Here you can check out our new products with fair price on rymo</p>
         </div>
-        <div className="row mx-auto container-fluid">
-        </div>
+        <div className="row mx-auto container-fluid"></div>
       </div>
     </>
   );

@@ -15,8 +15,6 @@ const Login = () => {
 
   const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [loginMutation, { isLoading }] = useLoginMutation();
 
   const handleInputChange = (event: any) => {
@@ -26,7 +24,7 @@ const Login = () => {
       [name]: value,
     }));
   };
-
+  const navigate = useNavigate();
   const handleLogin = async (event: any) => {
     event.preventDefault();
     // console.log(formData)
@@ -48,22 +46,17 @@ const Login = () => {
     }
     try {
       const response: any = await loginMutation(formData);
-      console.log(response);
+      console.log(response.data);
 
-      if (response.data) {
-        alert("Đăng nhập thành công ");
-        console.log("Login successful:", response.data);
+      console.log("Login successful:", response.data);
 
-        // set vào localstorage
-        localStorage.setItem("user", JSON.stringify(response.data));
-        navigate("/");
-      } else {
-        alert("không đúng tài khoản hoặc mật khẩu");
-        console.log("Login failed:", response.error);
-        // Handle login failure if needed
-      }
+      localStorage.setItem("accessToken", response.data.accessToken);
+      console.log(response.data);
+
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      navigate("/");
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
   return (
@@ -80,6 +73,7 @@ const Login = () => {
                     className="btn btn-login float-right"
                     onClick={() => {
                       localStorage.removeItem("user");
+                      localStorage.removeItem("accessToken");
                       navigate("/");
                     }}
                   >
