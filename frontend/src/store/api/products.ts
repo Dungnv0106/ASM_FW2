@@ -2,7 +2,15 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const products = createApi({
   reducerPath: "products",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8080/api" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:8080/api",
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("accessToken");
+      headers.set("authorization", `Bearer ${token}`);
+      // modify header theo từng request
+      return headers;
+    },
+  }),
   tagTypes: ["products"],
   endpoints: (builder) => ({
     // getAll products
@@ -15,7 +23,7 @@ export const products = createApi({
     }),
     // get product by id
     getProductById: builder.query({
-      query: (id: string) => ({
+      query: (id) => ({
         url: `/products/${id}`,
         method: "GET",
       }),
@@ -33,7 +41,7 @@ export const products = createApi({
     //update product
     updateProduct: builder.mutation({
       query: (product) => ({
-        url: `/products/${product._id}`,
+        url: `/products/update/${product._id}`,
         method: "PATCH",
         body: product,
       }),
@@ -41,8 +49,8 @@ export const products = createApi({
     }),
     //delete product
     deleteProduct: builder.mutation({
-      query: ({ id }) => ({
-        url: `/products/${id}`,
+      query: (product) => ({
+        url: `/products/${product._id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["products"],

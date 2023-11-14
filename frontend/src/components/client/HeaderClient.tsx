@@ -2,16 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import isLogin from "./isLogin";
 
 const HeaderClient = () => {
-
-  const navigate = useNavigate()
-  const logout = () => {
-    // Xóa dữ liệu người dùng khỏi localStorage
-    localStorage.removeItem('user');
-
-
-    navigate('/login')
-  };
-
+  const navigate = useNavigate();
 
   return (
     <>
@@ -51,18 +42,14 @@ const HeaderClient = () => {
               {isLogin() ? (
                 <>
                   <li className="nav-item">
-                    <Link to={"/login"} onClick={logout} className="nav-link">
-                      Logout
-                    </Link>
-                  </li>
-                  <li className="nav-item">
                     <Link to={"/cart"} className="nav-link">
                       <i className="fal fa-shopping-bag"></i>
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link to={"/forgot-password"} className="nav-link">
-                      <i className="fal fa-user"></i> {/* Đây là mã icon người dùng từ FontAwesome */}
+                    <Link to={"/information"} className="nav-link">
+                      <i className="fal fa-user"></i>{" "}
+                      {/* Đây là mã icon người dùng từ FontAwesome */}
                     </Link>
                   </li>
                 </>

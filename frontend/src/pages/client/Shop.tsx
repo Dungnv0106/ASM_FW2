@@ -1,6 +1,4 @@
-const Shop = ({productsList} : any) => {
-
-
+const Shop = ({ productsList }: any) => {
   return (
     <>
       <div className="featured">
@@ -116,11 +114,8 @@ const Shop = ({productsList} : any) => {
             <button className="btn-product">BUY NOW</button>
           </div>
         </div> */}
-        <div
-          className="row mx-auto container"
-          style={{ overflow: "hidden" }}
-        >
-          {productsList?.docs.map((product: any, index: any) => {
+        <div className="row mx-auto container" style={{ overflow: "hidden" }}>
+          {productsList?.map((product: any, index: any) => {
             return (
               <div className="product col-lg-3" key={index}>
                 {/* <Link ></Link> */}
