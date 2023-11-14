@@ -49,7 +49,7 @@ const Home = ({ productsList }: any) => {
           className="row mx-auto container-fluid"
           style={{ overflow: "hidden" }}
         >
-          {productsList?.docs.map((product: any, index: any) => {
+          {productsList?.docs.map((product: any, index: number) => {
             return (
               // <Link to="/product/:id">
                 <div className="product col-lg-3" key={index}>

@@ -7,8 +7,6 @@ const HeaderClient = () => {
   const logout = () => {
     // Xóa dữ liệu người dùng khỏi localStorage
     localStorage.removeItem('user');
-
-
     navigate('/login')
   };
 
