@@ -2,25 +2,19 @@ import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../../store/api/api";
 import { LoginCredentials, LoginResponse } from "../../interfaces/user";
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import isLogin from "../../components/client/isLogin";
-
-
 
 const Login = () => {
   // dữ liệu form
   const [formData, setFormData] = useState<LoginCredentials>({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const [loginErrors, setLoginErrors] = useState<string[]>([]);
 
   const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
-
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate()
   const [loginMutation, { isLoading }] = useLoginMutation();
 
   const handleInputChange = (event: any) => {
@@ -30,20 +24,20 @@ const Login = () => {
       [name]: value,
     }));
   };
-
+  const navigate = useNavigate();
   const handleLogin = async (event: any) => {
     event.preventDefault();
     // console.log(formData)
-    // lỗi validate 
+    // lỗi validate
     const errors: string[] = [];
 
     if (!formData.email) {
-      errors.push('Vui lòng nhập địa chỉ email.');
+      errors.push("Vui lòng nhập địa chỉ email.");
     } else if (!emailPattern.test(formData.email)) {
-      errors.push('Email không đúng định dạng');
+      errors.push("Email không đúng định dạng");
     }
     if (!formData.password) {
-      errors.push('Vui lòng nhập mật khẩu.');
+      errors.push("Vui lòng nhập mật khẩu.");
     }
 
     if (errors.length > 0) {
@@ -52,22 +46,17 @@ const Login = () => {
     }
     try {
       const response: any = await loginMutation(formData);
-      console.log(response)
+      console.log(response.data);
 
-      if (response.data) {
-        alert("Đăng nhập thành công ")
-        console.log('Login successful:', response.data);
+      console.log("Login successful:", response.data);
 
-        // set vào localstorage
-        localStorage.setItem('user', JSON.stringify(response.data));
-        navigate('/')
-      } else {
-        alert("không đúng tài khoản hoặc mật khẩu")
-        console.log('Login failed:', response.error);
-        // Handle login failure if needed
-      }
+      localStorage.setItem("accessToken", response.data.accessToken);
+      console.log(response.data);
+
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      navigate("/");
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   };
   return (
@@ -83,8 +72,9 @@ const Login = () => {
                   <button
                     className="btn btn-login float-right"
                     onClick={() => {
-                      localStorage.removeItem('user');
-                      navigate('/');
+                      localStorage.removeItem("user");
+                      localStorage.removeItem("accessToken");
+                      navigate("/");
                     }}
                   >
                     Đăng xuất
@@ -107,7 +97,8 @@ const Login = () => {
                         placeholder=""
                         name="email"
                         value={formData.email}
-                        onChange={handleInputChange} />
+                        onChange={handleInputChange}
+                      />
                     </div>
                     <div className="form-group">
                       <label
@@ -123,17 +114,24 @@ const Login = () => {
                         name="password"
                         value={formData.password}
                         onChange={handleInputChange}
-
                       />
                     </div>
 
                     <div className="form-check">
                       <label className="form-check-label">
                         {/* <input type="checkbox" className="form-check-input" /> */}
-                        <a href="/forgot-password"><small>Quên mật khẩu</small></a> <br />
-                        <a href="/register"><small>Đăng kí</small></a>
+                        <a href="/forgot-password">
+                          <small>Quên mật khẩu</small>
+                        </a>{" "}
+                        <br />
+                        <a href="/register">
+                          <small>Đăng kí</small>
+                        </a>
                       </label>
-                      <button type="submit" className="btn btn-login float-right">
+                      <button
+                        type="submit"
+                        className="btn btn-login float-right"
+                      >
                         Đăng nhập
                       </button>
                     </div>
@@ -148,9 +146,7 @@ const Login = () => {
                     </div>
                   )}
                 </>
-              )
-              }
-
+              )}
 
               <div className="copy-text">
                 Created with <i className="fa fa-heart"></i> by Grafreez

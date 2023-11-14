@@ -1,13 +1,19 @@
+import { useGetAllProductsQuery } from "../../store/api/products";
+import { Link } from "react-router-dom";
 import { useEffect } from "react";
 
-interface IUser{
-  message: string,
-  accessToken: string,
-  data: any
-}
+const Home = ({ productsList }: any) => {
+  // console.log(productsList);
 
-const Home = () => {
-  
+  // const {
+  //   isLoading,
+  //   isError,
+  //   data: productList,
+  // } = useGetAllProductsQuery(null);
+  // console.log(productList?.docs);
+
+  // if (isLoading) return <>Loading.......</>;
+
   return (
     <>
       <section className="home">
@@ -39,121 +45,48 @@ const Home = () => {
           <hr className="mx-auto" />
           <p>Here you can check out our new products with fair price on rymo</p>
         </div>
-        <div className="row mx-auto container-fluid">
-          <div className="product col-lg-3">
-            <img src="img/featured/1.jpg" alt="" className="img-fluid" />
-            <div className="star">
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-            </div>
-            <p className="product_name">Sport Boot</p>
-            <p className="product_price">$1000</p>
-            <button className="btn-product">BUY NOW</button>
-          </div>
-          <div className="product col-lg-3">
-            <img src="img/featured/2.jpg" alt="" className="img-fluid" />
-            <div className="star">
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-            </div>
-            <p className="product_name">Sport Boot</p>
-            <p className="product_price">$1000</p>
-            <button className="btn-product">BUY NOW</button>
-          </div>
-          <div className="product col-lg-3">
-            <img src="img/featured/3.jpg" alt="" className="img-fluid" />
-            <div className="star">
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-            </div>
-            <p className="product_name">Sport Boot</p>
-            <p className="product_price">$1000</p>
-            <button className="btn-product">BUY NOW</button>
-          </div>
-          <div className="product col-lg-3">
-            <img src="img/featured/4.jpg" alt="" className="img-fluid" />
-            <div className="star">
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-            </div>
-            <p className="product_name">Sport Boot</p>
-            <p className="product_price">$1000</p>
-            <button className="btn-product">BUY NOW</button>
-          </div>
+        <div
+          className="row mx-auto container-fluid"
+          style={{ overflow: "hidden" }}
+        >
+          {productsList?.docs.map((product: any, index: any) => {
+            return (
+              // <Link to="/product/:id">
+              <div className="product col-lg-3" key={index}>
+                <Link to={`/product/${product._id}`}>
+                  <div style={{ overflow: "hidden" }}>
+                    <img
+                      style={{ width: "310px", height: "340px" }}
+                      src={product.image?.[0].url}
+                      alt=""
+                      className="img-fluid"
+                    />
+                  </div>
+                  <div className="star">
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                  </div>
+                  <p className="product_name">{product.productName}</p>
+                  <p className="product_price">${product.price}</p>
+                  <button className="btn-product">BUY NOW</button>
+                </Link>
+              </div>
+              // </Link>
+            );
+          })}
         </div>
       </div>
+
       <div className="featured">
         <div className="container text-center mt-5 py-5">
           <h3>Our Category</h3>
           <hr className="mx-auto" />
           <p>Here you can check out our new products with fair price on rymo</p>
         </div>
-        <div className="row mx-auto container-fluid">
-          <div className="product col-lg-3">
-            <img src="img/featured/1.jpg" alt="" className="img-fluid" />
-            <div className="star">
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-            </div>
-            <p className="product_name">Sport Boot</p>
-            <p className="product_price">$1000</p>
-            <button className="btn-product">BUY NOW</button>
-          </div>
-          <div className="product col-lg-3">
-            <img src="img/featured/2.jpg" alt="" className="img-fluid" />
-            <div className="star">
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-            </div>
-            <p className="product_name">Sport Boot</p>
-            <p className="product_price">$1000</p>
-            <button className="btn-product">BUY NOW</button>
-          </div>
-          <div className="product col-lg-3">
-            <img src="img/featured/3.jpg" alt="" className="img-fluid" />
-            <div className="star">
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-            </div>
-            <p className="product_name">Sport Boot</p>
-            <p className="product_price">$1000</p>
-            <button className="btn-product">BUY NOW</button>
-          </div>
-          <div className="product col-lg-3">
-            <img src="img/featured/4.jpg" alt="" className="img-fluid" />
-            <div className="star">
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-              <i className="fas fa-star"></i>
-            </div>
-            <p className="product_name">Sport Boot</p>
-            <p className="product_price">$1000</p>
-            <button className="btn-product">BUY NOW</button>
-          </div>
-        </div>
+        <div className="row mx-auto container-fluid"></div>
       </div>
     </>
   );

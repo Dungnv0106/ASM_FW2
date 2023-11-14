@@ -78,7 +78,7 @@ export const signin = async (req, res) => {
       });
     }
     const token = jwt.sign({ id: user._id }, "diendeptrai", {
-      expiresIn: "1d",
+      expiresIn: "7d",
     });
     user.password = undefined;
 
@@ -161,6 +161,7 @@ export const resetPassword = async (req, res) => {
       message: "token không tồn tại hoặc đã hết hạn",
     });
   }
+
   user.password = await bcrypt.hash(password,10);
   user.passwordResetToken = undefined;
   user.passwordChangedAt = Date.now();
